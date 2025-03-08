@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GliomaTech - Precision AI Diagnostics</title>
+    <style>
+        :root {
+            --primary-blue: #007bff;       /* Main blue */
+            --secondary-teal: #00c4b4;     /* Teal for other elements */
+            --text-dark: #1a2b49;          /* Dark text */
+            --text-light: #ffffff;
+            --overlay-dark: rgba(26, 43, 73, 0.5);
+            --subtle-gray: #6e6e73;
+            --button-hover: #005bb5;
+            --mesh-blue: #007bff;
+            --mesh-teal: #00c4b4;
+            --mesh-purple: #6f42c1;
+            --mesh-bg: #f5f7fa;
+            --accent-white: #ffffff;
+            --special-color: #00e5cc;      /* Brighter teal for Diagnose */
+            --special-hover: #00b8a3;      /* Darker hover for Diagnose */
+            --nav-button-bg: #e8ecef;      /* Darker background for navbar links */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        body {
+            background: var(--mesh-bg);
+            color: var(--text-dark);
+            line-height: 1.4;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Mesh Gradient Background */
+        .mesh-gradient {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 30%, var(--mesh-blue) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, var(--mesh-teal) 0%, transparent 50%),
+                        radial-gradient(circle at 50% 80%, var(--mesh-purple) 0%, transparent 50%);
+            background-blend-mode: overlay;
+            animation: gradientShift 15s ease-in-out infinite;
+            z-index: 0;
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 10px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--primary-blue);
+        }
+
+        nav {
+            display: flex;
+            gap: 10px;
+        }
+
+        nav a {
+            color: var(--text-dark);
+            text-decoration: none;
+            font-size: 16px;
+            padding: 8px 16px;
+            border: 1px solid var(--subtle-gray);
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            background: var(--nav-button-bg); /* Darker background */
+        }
+
+        nav a:hover {
+            color: var(--primary-blue);
+            border-color: var(--primary-blue);
+            background: rgba(0, 123, 255, 0.3); /* Slightly darker blue tint on hover */
+        }
+
+        nav .special {
+            color: var(--special-hover);
+            font-weight: 600;
+            font-size: 18px;
+            border-color: var(--special-hover);
+            background: rgba(0, 229, 204, 0.3); /* Darker teal tint */
+        }
+
+        nav .special:hover {
+            color: var(--special-hover);
+            border-color: var(--special-hover);
+            background: rgba(0, 184, 163, 0.4);
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 50vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            padding-top: 80px;
+            padding-bottom: 20px;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://via.placeholder.com/1920x1080?text=Brain+MRI') no-repeat center;
+            background-size: cover;
+            z-index: 1;
+            animation: zoomIn 20s infinite ease-in-out;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--overlay-dark);
+            z-index: 2;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 3;
+            color: var(--text-light);
+            padding: 0 20px;
+        }
+
+        h1 {
+            font-size: 56px;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            margin-bottom: 20px;
+            color: var(--text-light);
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        h1 span {
+            color: var(--special-color);
+        }
+
+        p {
+            font-size: 28px;
+            font-weight: 400;
+            max-width: 800px;
+            margin: 0 auto 30px;
+            color: var(--text-light);
+            opacity: 0.9;
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .cta {
+            display: inline-block;
+            padding: 12px 30px;
+            background: var(--primary-blue);
+            color: var(--text-light);
+            text-decoration: none;
+            font-size: 18px;
+            border-radius: 980px;
+            transition: background 0.3s;
+        }
+
+        .cta:hover {
+            background: var(--button-hover);
+        }
+
+        .cta.special {
+            background: var(--special-color);
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .cta.special:hover {
+            background: var(--special-hover);
+        }
+
+        /* Feature Section */
+        .features {
+            padding: 80px 40px;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            background: var(--accent-white);
+        }
+
+        .features h2 {
+            font-size: 40px;
+            font-weight: 600;
+            margin-bottom: 60px;
+            color: var(--text-dark);
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .feature {
+            padding: 20px;
+            animation: slideUp 1.5s ease-in-out;
+        }
+
+        .feature h3 {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--primary-blue);
+            margin-bottom: 10px;
+        }
+
+        .feature p {
+            font-size: 16px;
+            color: var(--subtle-gray);
+            margin: 0;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes zoomIn {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 0%; }
+            50% { background-position: 100% 100%; }
+            100% { background-position: 0% 0%; }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header { padding: 10px 20px; flex-direction: column; }
+            nav { margin-top: 10px; flex-wrap: wrap; justify-content: center; }
+            nav a { margin: 5px; }
+            .hero { height: 40vh; padding-top: 60px; }
+            h1 { font-size: 36px; }
+            p { font-size: 20px; }
+            .button-group { flex-direction: column; gap: 15px; }
+            .features { padding: 40px 20px; }
+            .features h2 { font-size: 32px; }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="mesh-gradient"></div>
+    <header>
+        <div class="logo">GliomaTech</div>
+        <nav>
+            <a href="#">Home</a>
+            <a href="#" class="special">Diagnose</a>
+            <a href="#">About NeuroDx</a>
+            <a href="#">Contact</a>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1>Precision Glioma <span>Diagnosis</span></h1>
+            <p>Advanced machine learning meets biomedical innovation to redefine healthcare.</p>
+            <div class="button-group">
+                <a href="#" class="cta special">Diagnose</a>
+                <a href="#" class="cta">Learn More</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="features">
+        <h2>Why GliomaTech?</h2>
+        <div class="feature-grid">
+            <div class="feature">
+                <h3>AI-Driven Accuracy</h3>
+                <p>Our ML models deliver unparalleled precision in glioma detection.</p>
+            </div>
+            <div class="feature">
+                <h3>Biomedical Expertise</h3>
+                <p>Built by a team of neuroscientists and tech pioneers.</p>
+            </div>
+            <div class="feature">
+                <h3>Scalable Solutions</h3>
+                <p>Designed for clinics, hospitals, and research labs worldwide.</p>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

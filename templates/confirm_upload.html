@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}GliomaTech - Upload Confirmed{% endblock %}
+{% block title %}GliomaDx - Upload Confirmed{% endblock %}
 
 {% block body_class %}confirm-upload{% endblock %}
 
@@ -35,6 +35,11 @@
                 </div>
             {% else %}
                 <!-- 4 images (unsegmented) - 2x2 grid -->
+                <div class="vis-container" id="vis-flair" data-file="Segmentation.nii.gz">
+                    <h3>FLAIR</h3>
+                    <div class="loader"></div>
+                    <img class="mri-slice" src="">
+                </div>
                 <div class="vis-container" id="vis-t1" data-file="T1.nii.gz">
                     <h3>T1</h3>
                     <div class="loader"></div>
@@ -59,7 +64,7 @@
         </div>
 
         <div class="button-group">
-            <a href="{{ url_for('home') }}" class="cta special">Continue to Results</a>
+            <a href="{{ url_for('result') }}" class="cta special">Continue to Results</a>
             <a href="{{ url_for('diagnose') }}" class="cta">Go Back</a>
         </div>
 

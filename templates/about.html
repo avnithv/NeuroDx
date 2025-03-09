@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}GliomaTech - About{% endblock %}
+{% block title %}GliomaDx - About{% endblock %}
 
 {% block body_class %}about{% endblock %}
 
@@ -9,7 +9,7 @@
     <div class="hero-bg"></div>
     <div class="hero-overlay"></div>
     <div class="hero-content">
-        <h1>About <span>GliomaTech</span></h1>
+        <h1>About <span>GliomaDx</span></h1>
         <p>Pioneering AI-driven glioma diagnosis through advanced MRI analysis.</p>
     </div>
 </section>
@@ -17,8 +17,9 @@
 <section class="features">
         <div class="info-box">
             <h2>Our Story</h2>
-            <h4>GliomaTech was founded to revolutionize glioma diagnosis using artificial intelligence. Our team of neurologists, AI researchers, and engineers collaborates to deliver cutting-edge tools that analyze MRI scans with unparalleled precision, supporting clinicians worldwide. [Add your story or mission details here.]</h4>
-            <a href="{{ url_for('diagnose') }}" class="cta special">Try GliomaTech</a>
+            <h4>Several members of our team have had family members affected by cancer, driven primarily by inequities in histopathology diagnosis. Through past research experiences with Dartmouth Health, we've gained an understanding in implementing AI-based solutions in the context of pathology to improve diagnosis and mitigate misclassification rates. With this expertise we gained in pathology, we were interested in expanding this technological application to glioma diagnosis, especially because it is a field where significant improvement can be made to help patients and reduce health inequity.
+            </h4>
+            <a href="{{ url_for('diagnose') }}" class="cta special">Try GliomaDx</a>
         </div>
     </section>
 {% endblock %}

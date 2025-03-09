@@ -120,6 +120,10 @@ nav .special:hover {
     height: 35vh;
 }
 
+.about .hero {
+    height: 40vh;
+}
+
 .hero-bg {
     position: absolute;
     top: 0;
@@ -148,6 +152,75 @@ nav .special:hover {
     color: var(--text-light);
     padding: 0 20px;
 }
+
+.d {
+    padding: 80px 40px;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+    background: var(--accent-white);
+  }
+  
+  .d body {
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background-color: #f5f5f7;
+    color: #1d1d1f;
+  }
+  .d container {
+    max-width: 600px;
+    margin: 60px auto;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    text-align: center;
+    padding: 40px;
+    z-index: -1;
+  }
+  .d h1 {
+    font-size: 2.4rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #1d1d1f;
+  }
+  .d p {
+    font-size: 1.1rem;
+    color: #6e6e73;
+    margin-bottom: 40px;
+  }
+  /* File input styling */
+  .file-input {
+    display: block;
+    margin: 0 auto 20px;
+    padding: 10px;
+    border: 1px solid #d2d2d7;
+    border-radius: 8px;
+    background-color: #fff;
+    color: #1d1d1f;
+    cursor: pointer;
+    transition: border-color 0.2s ease;
+  }
+  .file-input:hover {
+    border-color: #0071e3;
+  }
+  /* Submit button */
+  .submit-button {
+    display: inline-block;
+    padding: 12px 30px;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #fff;
+    background-color: #0071e3;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    margin-top: 20px;
+  }
+  .submit-button:hover {
+    background-color: #005bb5;
+  }  
 
 h1 {
     font-size: 56px;
@@ -219,6 +292,19 @@ p {
     max-width: 800px;
     margin: 0 auto 30px;
     color: var(--text-dark);
+    opacity: 0.9;
+    animation: fadeIn 2s ease-in-out;
+    word-wrap: break-word;     /* Ensures long words break */
+    overflow-wrap: break-word;
+}
+
+.features h4 {
+    font-size: 20px;
+    font-weight: 400;
+    max-width: 800px;
+    margin: 0 auto 30px;
+    color: var(--text-dark);
+    margin-bottom: 50px;
     opacity: 0.9;
     animation: fadeIn 2s ease-in-out;
     word-wrap: break-word;     /* Ensures long words break */
@@ -412,7 +498,7 @@ p {
 .features h3 {
     font-size: 20px;
     font-weight: 600;
-    color: var(--text-dark);
+    color: var(--primary-blue);
     margin-bottom: 15px;
     margin-top: 30px;
 }
@@ -565,6 +651,212 @@ button.cta.special:disabled {
     animation: spin 1s linear infinite;
 }
 
+.about-section {
+    padding: 80px 20px;
+    text-align: center;
+}
+
+.about-section .intro {
+    font-size: 1.2em;
+    color: var(--text-light);
+    margin-bottom: 40px;
+}
+
+.mission, .team, .technology {
+    margin: 40px 0;
+}
+
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    max-width: 800px;
+    margin: 20px auto;
+}
+
+.team-member {
+    background: var(--nav-button-bg);
+    padding: 20px;
+    border-radius: 5px;
+    border: 1px solid var(--subtle-gray);
+}
+
+.team-member h3 {
+    margin: 0 0 10px 0;
+    color: var(--primary-blue);
+}
+
+.team-member p {
+    margin: 0;
+    color: var(--text-light);
+}
+
+/* Contact Page */
+.contact .hero {
+    height: 40vh;
+}
+
+.info-box {
+    background: var(--nav-button-bg);
+    padding: 50px; /* Increased for more space */
+    border-radius: 10px;
+    max-width: 700px; /* Slightly wider for professionalism */
+    margin: 0 auto;
+    text-align: center;
+    border: 1px solid var(--subtle-gray);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); /* Subtle shadow for depth */
+}
+
+.info-box h2 {
+    margin-bottom: 25px;
+    color: var(--primary-blue);
+    font-size: 1.8em; /* Slightly larger for emphasis */
+}
+
+/* Contact Form Specific Styles */
+.info-box form {
+    text-align: left;
+}
+
+.info-box label {
+    display: block;
+    margin: 15px 0 8px; /* More spacing for clarity */
+    color: var(--primary-blue); /* Match theme */
+    font-weight: 600; /* Bolder labels */
+}
+
+.info-box input, .info-box textarea {
+    width: 100%;
+    padding: 12px; /* Larger padding for comfort */
+    margin-bottom: 20px;
+    border: 1px solid var(--subtle-gray);
+    border-radius: 5px;
+    background: #fff;
+    color: #333;
+    font-size: 1em;
+    transition: border-color 0.3s ease; /* Smooth focus transition */
+}
+
+.info-box input:focus, .info-box textarea:focus {
+    outline: none;
+    border-color: var(--special-color); /* Teal focus state */
+    box-shadow: 0 0 5px rgba(0, 255, 204, 0.3); /* Subtle glow */
+}
+
+.info-box textarea {
+    resize: vertical;
+    min-height: 120px; /* Taller textarea */
+}
+
+.info-box button {
+    width: 100%;
+    margin-top: 15px;
+    padding: 12px; /* Consistent with inputs */
+    background: var(--special-color); /* Teal button */
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background 0.3s ease; /* Smooth hover */
+}
+
+.info-box button:hover {
+    background: #00b3b3; /* Darker teal on hover */
+}
+
+.info-box .contact-details {
+    margin-top: 30px;
+    font-size: 1em; /* Slightly larger */
+    color: var(--text-dark);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Space between items */
+}
+
+.info-box .contact-details span {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Space between icon/label and value */
+}
+
+.info-box .contact-details strong {
+    color: var(--text-dark); /* Theme consistency */
+    font-weight: 600;
+}
+
+.contact-section {
+    padding: 80px 20px;
+    text-align: center;
+}
+
+.contact-section .intro {
+    font-size: 1.2em;
+    color: var(--text-light);
+    margin-bottom: 40px;
+}
+
+.contact-container {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    max-width: 1000px;
+    margin: 0 auto 40px;
+}
+
+.contact-form, .contact-info {
+    flex: 1;
+    background: var(--nav-button-bg);
+    padding: 20px;
+    border-radius: 5px;
+    border: 1px solid var(--subtle-gray);
+}
+
+.contact-form h2, .contact-info h2 {
+    margin-top: 0;
+    color: var(--primary-blue);
+}
+
+.contact-info p {
+    margin-top: 0;
+    color: var(--primary-blue);
+}
+.contact-form label {
+    display: block;
+    text-align: left;
+    margin: 10px 0 5px;
+    color: var(--text-light);
+}
+
+.contact-form input, .contact-form textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid var(--subtle-gray);
+    border-radius: 5px;
+    background: #fff;
+    color: #333;
+}
+
+.contact-form textarea {
+    resize: vertical;
+}
+
+.contact-form button {
+    width: 100%;
+}
+
+.contact-info p {
+    margin: 10px 0;
+    text-align: left;
+    color: var(--text-light);
+}
+
+.contact-details {
+    color: var(--primary-blue);
+}
+
 /* .vis-container h3 {
     font-size: 18px;
     font-weight: 600;
@@ -663,5 +955,21 @@ button.cta.special:disabled {
     .visualization-grid {
         grid-template-columns: 1fr; /* Stack all on mobile */
         grid-template-rows: auto; /* Auto rows for both cases */
+    }
+}
+
+@media (max-width: 768px) {
+    /* ... (previous media queries) ... */
+    .team-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .contact-container {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .contact-form, .contact-info {
+        width: 100%;
     }
 }

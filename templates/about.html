@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}GliomaTech - About{% endblock %}
+
+{% block body_class %}about{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+        <h1>About <span>GliomaTech</span></h1>
+        <p>Pioneering AI-driven glioma diagnosis through advanced MRI analysis.</p>
+    </div>
+</section>
+
+<section class="features">
+        <div class="info-box">
+            <h2>Our Story</h2>
+            <h4>GliomaTech was founded to revolutionize glioma diagnosis using artificial intelligence. Our team of neurologists, AI researchers, and engineers collaborates to deliver cutting-edge tools that analyze MRI scans with unparalleled precision, supporting clinicians worldwide. [Add your story or mission details here.]</h4>
+            <a href="{{ url_for('diagnose') }}" class="cta special">Try GliomaTech</a>
+        </div>
+    </section>
+{% endblock %}

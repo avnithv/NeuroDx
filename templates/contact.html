@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}GliomaTech - Contact{% endblock %}
+
+{% block body_class %}contact{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+        <h1>Contact <span>Us</span></h1>
+        <p>Have questions or need support? Reach out to the GliomaTech team.</p>
+    </div>
+</section>
+
+<section class="features">
+
+        <div class="info-box">
+            <h2>Get in Touch</h2>
+            <form id="contact-form">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" required>
+                
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+                
+                <label for="message">Message</label>
+                <textarea id="message" name="message" rows="5" required></textarea>
+                
+                <button type="submit" class="cta special">Submit</button>
+            </form>
+            <p class="contact-details"><strong>Email: gliograde@gmail.com</strong></p>
+        </div>
+    </section>
+
+    <script>
+        document.getElementById('contact-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const message = document.getElementById('message').value;
+            console.log('Form submitted:', { name, email, message });
+            alert('Thank you for your message! We’ll get back to you soon.');
+            this.reset();
+        });
+    </script>
+{% endblock %}

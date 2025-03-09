@@ -1,0 +1,490 @@
+:root {
+    --primary-blue: #007bff;       /* Main blue */
+    --secondary-teal: #00c4b4;     /* Teal for other elements */
+    --text-dark: #1a2b49;          /* Dark text */
+    --text-light: #ffffff;
+    --overlay-dark: rgba(26, 43, 73, 0.5);
+    --subtle-gray: #6e6e73;
+    --button-hover: #005bb5;
+    --mesh-blue: #007bff;
+    --mesh-teal: #00c4b4;
+    --mesh-purple: #6f42c1;
+    --mesh-bg: #f5f7fa;
+    --accent-white: #ffffff;
+    --special-color: #00e5cc;      /* Brighter teal for Diagnose */
+    --special-hover: #00b8a3;      /* Darker hover for Diagnose */
+    --nav-button-bg: #e8ecef;      /* Darker background for navbar links */
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+body {
+    background: var(--mesh-bg);
+    color: var(--text-dark);
+    line-height: 1.4;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* Mesh Gradient Background */
+.mesh-gradient {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 20% 30%, var(--mesh-blue) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, var(--mesh-teal) 0%, transparent 50%),
+                radial-gradient(circle at 50% 80%, var(--mesh-purple) 0%, transparent 50%);
+    background-blend-mode: overlay;
+    animation: gradientShift 15s ease-in-out infinite;
+    z-index: 0;
+}
+
+/* Header */
+header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 10px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--primary-blue);
+}
+
+nav {
+    display: flex;
+    gap: 10px;
+}
+
+nav a {
+    color: var(--text-dark);
+    text-decoration: none;
+    font-size: 16px;
+    padding: 8px 16px;
+    border: 1px solid var(--subtle-gray);
+    border-radius: 20px;
+    transition: all 0.3s ease;
+    background: var(--nav-button-bg); /* Darker background */
+}
+
+nav a:hover {
+    color: var(--primary-blue);
+    border-color: var(--primary-blue);
+    background: rgba(0, 123, 255, 0.3); /* Slightly darker blue tint on hover */
+}
+
+nav .special {
+    color: var(--special-hover);
+    font-weight: 600;
+    font-size: 18px;
+    border-color: var(--special-hover);
+    background: rgba(0, 229, 204, 0.3); /* Darker teal tint */
+}
+
+nav .special:hover {
+    color: var(--special-hover);
+    border-color: var(--special-hover);
+    background: rgba(0, 184, 163, 0.4);
+}
+
+/* Hero Section */
+.hero {
+    height: 50vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+    padding-top: 80px;
+    padding-bottom: 20px;
+}
+
+.diagnose .hero {
+    height: 35vh;
+}
+
+.hero-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('https://via.placeholder.com/1920x1080?text=Brain+MRI') no-repeat center;
+    background-size: cover;
+    z-index: 1;
+    animation: zoomIn 20s infinite ease-in-out;
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--overlay-dark);
+    z-index: 2;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 3;
+    color: var(--text-light);
+    padding: 0 20px;
+}
+
+h1 {
+    font-size: 56px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    margin-bottom: 20px;
+    color: var(--text-light);
+    animation: fadeIn 1.5s ease-in-out;
+}
+
+h1 span {
+    color: var(--special-color);
+}
+
+p {
+    font-size: 28px;
+    font-weight: 400;
+    max-width: 800px;
+    margin: 0 auto 30px;
+    color: var(--text-light);
+    opacity: 0.9;
+    animation: fadeIn 2s ease-in-out;
+}
+
+.button-group {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+}
+
+.cta {
+    display: inline-block;
+    padding: 12px 30px;
+    background: var(--primary-blue);
+    color: var(--text-light);
+    text-decoration: none;
+    font-size: 18px;
+    border-radius: 980px;
+    /* animation: zoomIn 1.5s ease-in-out; */
+    transition: background 0.3s;
+}
+
+.cta:hover {
+    background: var(--button-hover);
+}
+
+.cta.special {
+    background: var(--special-color);
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.cta.special:hover {
+    background: var(--special-hover);
+}
+
+/* Feature Section */
+.features {
+    padding: 80px 40px;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+    background: var(--accent-white);
+}
+
+.features p {
+    font-size: 40px;
+    font-weight: 400;
+    max-width: 800px;
+    margin: 0 auto 30px;
+    color: var(--text-dark);
+    opacity: 0.9;
+    animation: fadeIn 2s ease-in-out;
+    word-wrap: break-word;     /* Ensures long words break */
+    overflow-wrap: break-word;
+}
+
+.features h2 {
+    font-size: 40px;
+    font-weight: 600;
+    margin-bottom: 60px;
+    color: var(--text-dark);
+}
+
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.feature {
+    padding: 20px;
+    animation: slideUp 1.5s ease-in-out;
+}
+
+.feature h3 {
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--primary-blue);
+    margin-bottom: 10px;
+}
+
+.feature p {
+    font-size: 16px;
+    color: var(--subtle-gray);
+    margin: 0;
+}
+
+.footer {
+    margin-top: 30px;
+    font-size: 0.85rem;
+    color: #3a3a42;
+}
+
+/* Upload Form Styles */
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background: var(--accent-white);
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    position: relative;
+    z-index: 1;
+}
+
+.upload-group {
+    margin-bottom: 20px;
+}
+
+.upload-group label {
+    display: block;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 8px;
+}
+.custom-file-input {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    background: var(--nav-button-bg);
+    border: 1px solid var(--subtle-gray);
+    border-radius: 5px;
+    padding: 5px;
+    transition: border-color 0.3s;
+    margin-bottom: 20px;
+}
+
+.custom-file-input:hover,
+.custom-file-input:focus-within {
+    border-color: var(--primary-blue);
+}
+
+.custom-file-input input[type="file"] {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+    z-index: 2;
+}
+
+.custom-file-input .file-btn {
+    background: var(--primary-blue);
+    color: var(--text-light);
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s;
+    z-index: 1;
+}
+
+.custom-file-input .file-btn:hover {
+    background: var(--button-hover);
+}
+
+.custom-file-input .file-name {
+    margin-left: 15px;
+    font-size: 16px;
+    color: var(--subtle-gray);
+    flex-grow: 1;
+    text-align: left;
+    z-index: 1;
+    overflow: hidden;
+}
+
+.file-assignments {
+    margin-top: 20px;
+}
+
+.file-assignments h3 {
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 15px;
+}
+
+.assignment-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+}
+
+.assignment-item {
+    text-align: center;
+}
+
+.assignment-label {
+    display: block;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--primary-blue);
+    margin-bottom: 8px;
+}
+.drop-zone {
+    min-height: 80px;
+    background: var(--accent-white);
+    border: 2px dashed var(--subtle-gray);
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    transition: border-color 0.3s;
+}
+
+.drop-zone:hover,
+.drop-zone.dragover {
+    border-color: var(--primary-blue);
+}
+
+.drop-zone.dragover {
+    background: rgba(0, 123, 255, 0.1); /* Light blue tint when dragging over */
+}
+
+.file-item {
+    background: var(--nav-button-bg);
+    padding: 8px;
+    border-radius: 5px;
+    font-size: 14px;
+    color: var(--text-dark);
+    cursor: move;
+    word-break: break-all;
+    text-align: center;
+}
+
+.hidden-input {
+    display: none;
+}
+
+/* Adjust button to match theme */
+button.cta.special {
+    width: 100%;
+    padding: 14px;
+    font-size: 20px;
+    background: var(--special-color);
+    color: var(--text-light);
+    border: none;
+    border-radius: 980px;
+    cursor: pointer;
+    transition: background 0.3s;
+    margin-top: 20px;
+}
+
+button.cta.special:hover {
+    background: var(--special-hover);
+}
+
+button.cta.special:disabled {
+    background: var(--subtle-gray);
+    cursor: not-allowed;
+}
+
+.error .hero {
+    height: 20vh; /* Taller than Diagnose (25vh) but shorter than Home (50vh) */
+}
+
+/* Animations */
+@keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+@keyframes slideUp {
+    0% { opacity: 0; transform: translateY(20px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes zoomIn {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+@keyframes gradientShift {
+    0% { background-position: 0% 0%; }
+    50% { background-position: 100% 100%; }
+    100% { background-position: 0% 0%; }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    header { padding: 10px 20px; flex-direction: column; }
+    nav { margin-top: 10px; flex-wrap: wrap; justify-content: center; }
+    nav a { margin: 5px; }
+    .hero { height: 40vh; padding-top: 60px; }
+    h1 { font-size: 36px; }
+    p { font-size: 20px; }
+    .button-group { flex-direction: column; gap: 15px; }
+    .features { padding: 40px 20px; }
+    .features h2 { font-size: 32px; }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    /* ... (previous media queries) ... */
+    .assignment-grid {
+        grid-template-columns: 1fr;
+    }
+    .drop-zone {
+        min-height: 60px;
+    }
+    .file-item {
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 768px) {
+    /* ... (previous media queries) ... */
+    .error .hero {
+        height: 50vh; /* Adjusted for mobile */
+    }
+}

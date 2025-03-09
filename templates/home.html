@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}GliomaDx{% endblock %}
+
+{% block body_class %}home{% endblock %}
+
+{% block content %}
+    <section class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1>Precision Glioma <span>Diagnosis</span></h1>
+            <p>Advanced machine learning meets biomedical innovation to redefine healthcare.</p>
+            <div class="button-group">
+                <a href="{{ url_for('diagnose') }}" class="cta special">Diagnose</a>
+                <a href="#" class="cta">Learn More</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="features">
+        <h2>Why GliomaTech?</h2>
+        <div class="feature-grid">
+            <div class="feature">
+                <h3>AI-Driven Accuracy</h3>
+                <p>Our ML models deliver unparalleled precision in glioma detection.</p>
+            </div>
+            <div class="feature">
+                <h3>Biomedical Expertise</h3>
+                <p>Built by a team of neuroscientists and tech pioneers.</p>
+            </div>
+            <div class="feature">
+                <h3>Scalable Solutions</h3>
+                <p>Designed for clinics, hospitals, and research labs worldwide.</p>
+            </div>
+        </div>
+    </section>
+{% endblock %}

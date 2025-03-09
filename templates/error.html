@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}GliomaTech - Error{% endblock %}
+
+{% block body_class %}error{% endblock %}
+
+{% block content %}
+    <section class="hero">
+        <!-- <div class="hero-bg" style="background: url('{{ url_for('static', filename='images/brain_mri.jpg') }}') no-repeat center;"></div> -->
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1>Oops! <span>Something Went Wrong</span></h1>
+        <div>
+        
+    </section>
+
+    <div class="features">
+        <p>{{ error_message | replace('\n', '<br>') | safe }}</p>
+        <div class="button-group">
+            <a href="{{ url_for('diagnose') }}" class="cta special">Try Again</a>
+            <a href="{{ url_for('home') }}" class="cta">Back to Home</a>
+        </div>
+    </div>
+{% endblock %}

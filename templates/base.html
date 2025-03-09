@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}GliomaDx{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/diagnose_style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body class="{% block body_class %}{% endblock %}">
+    <div class="mesh-gradient"></div>
+    <header>
+        <div class="logo">GliomaDx</div>
+        <nav>
+            <a href="{{ url_for('home') }}">Home</a>
+            <a href="{{ url_for('diagnose') }}" class="special">Diagnose</a>
+            <a href="#">About NeuroDx</a>
+            <a href="#">Contact</a>
+        </nav>
+    </header>
+
+    {% block content %}
+    {% endblock %}
+
+    <div class="footer" align="center">
+        <p>© 2025 Glioma Detection Tool</p>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const fileInputs = document.querySelectorAll('input[type="file"]');
+            fileInputs.forEach(input => {
+                input.addEventListener('change', function() {
+                    const fileNameSpan = this.parentElement.querySelector('.file-name');
+                    if (this.files && this.files[0]) {
+                        fileNameSpan.textContent = this.files[0].name;
+                    } else {
+                        fileNameSpan.textContent = 'No scan selected';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+</body>
+</html>

@@ -1,0 +1,158 @@
+{% extends "base.html" %}
+
+{% block title %}GliomaTech - Diagnose{% endblock %}
+
+{% block body_class %}diagnose{% endblock %}
+
+{% block content %}
+    <section class="hero" height="50%">
+        <!-- <div class="hero-bg" style="background: url('{{ url_for('static', filename='images/brain_mri.jpg') }}') no-repeat center;"></div> -->
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1>Diagnose with <span>AI Precision</span></h1>
+            <p>Upload your scans and get instant glioma detection results.</p>
+        </div>
+    </section>
+
+    <div class="d">
+      <div class="container">
+        <form action="{{ url_for('diagnose') }}" method="POST" enctype="multipart/form-data" id="diagnose-form">
+            <div class="custom-file-input">
+                <input type="file" name="scans" id="scans" multiple required>
+                <button type="button" class="file-btn">Select Scans</button>
+                <span class="file-name">No scans selected (Upload 4: T1, T2, T1C, FLAIR as .nii or .nii.gz)</span>
+            </div>
+
+            <div class="file-assignments" id="file-assignments" style="display: none;">
+                <h3>Assign Scans</h3>
+                <div class="assignment-grid">
+                    <div class="assignment-item" data-type="t1">
+                        <span class="assignment-label">T1</span>
+                        <div class="drop-zone" data-type="t1"></div>
+                        <input type="hidden" name="t1_file" class="hidden-input">
+                    </div>
+                    <div class="assignment-item" data-type="t2">
+                        <span class="assignment-label">T2</span>
+                        <div class="drop-zone" data-type="t2"></div>
+                        <input type="hidden" name="t2_file" class="hidden-input">
+                    </div>
+                    <div class="assignment-item" data-type="t1c">
+                        <span class="assignment-label">T1C</span>
+                        <div class="drop-zone" data-type="t1c"></div>
+                        <input type="hidden" name="t1c_file" class="hidden-input">
+                    </div>
+                    <div class="assignment-item" data-type="flair">
+                        <span class="assignment-label">FLAIR</span>
+                        <div class="drop-zone" data-type="flair"></div>
+                        <input type="hidden" name="flair_file" class="hidden-input">
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="cta special" disabled>Analyze Scans</button>
+        </form>
+    </div>
+    </div>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+          const fileInput = document.getElementById('scans');
+          const fileNameSpan = document.querySelector('.file-name');
+          const fileAssignments = document.getElementById('file-assignments');
+          const dropZones = document.querySelectorAll('.drop-zone');
+          const submitButton = document.querySelector('button[type="submit"]');
+          let files = [];
+
+          // Update file name display and process uploads
+          fileInput.addEventListener('change', function() {
+              files = Array.from(this.files);
+              fileNameSpan.textContent = files.length > 0 ? `${files.length} scans selected` : 'No scans selected (Upload 4: T1, T2, T1C, FLAIR as .nii or .nii.gz)';
+              
+              if (files.length > 0) {
+                  fileAssignments.style.display = 'block';
+                  assignFiles(files);
+                  checkAllAssigned();
+              } else {
+                  fileAssignments.style.display = 'none';
+                  submitButton.disabled = true;
+              }
+          });
+
+          // Infer file types and populate drop zones
+          function assignFiles(files) {
+              const types = ['t1', 't2', 't1c', 'flair'];
+              dropZones.forEach(zone => zone.innerHTML = '');
+              files.forEach(file => {
+                  const fileName = file.name.toLowerCase();
+                  let assignedType = types.find(type => fileName.includes(type)) || null;
+                  const dropZone = assignedType ? 
+                                  document.querySelector(`.drop-zone[data-type="${assignedType}"]:empty`) || 
+                                  document.querySelector('.drop-zone:empty') :
+                                  document.querySelector('.drop-zone:empty');
+                  if (dropZone) addFileToZone(file, dropZone);
+              });
+          }
+
+          // Add file to drop zone
+          function addFileToZone(file, dropZone) {
+              const fileDiv = document.createElement('div');
+              fileDiv.className = 'file-item';
+              fileDiv.draggable = true;
+              fileDiv.textContent = file.name;
+              fileDiv.dataset.fileName = file.name;
+              dropZone.innerHTML = '';
+              dropZone.appendChild(fileDiv);
+              updateHiddenInput(dropZone);
+          }
+
+          // Drag and drop functionality
+          dropZones.forEach(zone => {
+              zone.addEventListener('dragover', e => {
+                  e.preventDefault();
+                  zone.classList.add('dragover');
+              });
+              zone.addEventListener('dragleave', e => {
+                  zone.classList.remove('dragover');
+              });
+              zone.addEventListener('drop', e => {
+                  e.preventDefault();
+                  zone.classList.remove('dragover');
+                  const fileName = e.dataTransfer.getData('text/plain');
+                  const draggedItem = document.querySelector(`.file-item[data-file-name="${fileName}"]`);
+                  if (draggedItem) {
+                      const sourceZone = draggedItem.parentElement;
+                      const existingItem = zone.querySelector('.file-item');
+                      if (existingItem) {
+                          sourceZone.appendChild(existingItem);
+                      } else {
+                          sourceZone.innerHTML = '';
+                      }
+                      zone.innerHTML = '';
+                      zone.appendChild(draggedItem);
+                      updateHiddenInput(zone);
+                      updateHiddenInput(sourceZone);
+                      checkAllAssigned();
+                  }
+              });
+          });
+
+          document.addEventListener('dragstart', e => {
+              if (e.target.className === 'file-item') {
+                  e.dataTransfer.setData('text/plain', e.target.dataset.fileName);
+              }
+          });
+
+          // Update hidden input with file name
+          function updateHiddenInput(zone) {
+              const fileItem = zone.querySelector('.file-item');
+              const hiddenInput = zone.parentElement.querySelector('.hidden-input');
+              hiddenInput.value = fileItem ? fileItem.dataset.fileName : '';
+          }
+
+          // Enable submit button only when all zones are filled
+          function checkAllAssigned() {
+              const allFilled = Array.from(dropZones).every(zone => zone.querySelector('.file-item'));
+              submitButton.disabled = !allFilled;
+          }
+      });
+  </script>
+{% endblock %}

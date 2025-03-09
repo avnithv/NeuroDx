@@ -5,16 +5,146 @@
 {% block body_class %}confirm-upload{% endblock %}
 
 {% block content %}
-    <section class="hero">
-        <!-- <div class="hero-bg" style="background: url('{{ url_for('static', filename='images/brain_mri.jpg') }}') no-repeat center;"></div> -->
-        <div class="hero-overlay"></div>
-        <div class="hero-content">
-            <h1>Upload <span>Confirmed</span></h1>
-            <p>Your scans have been successfully uploaded to folder: <strong>{{ folder }}</strong></p>
-            <div class="button-group">
-                <a href="{{ url_for('diagnose') }}" class="cta special">Upload More</a>
-                <a href="{{ url_for('home') }}" class="cta">Back to Home</a>
-            </div>
+    <section class="confirm-section">
+        <h1>Upload <span>Completed</span></h1>
+        <p>Your scans have been successfully uploaded to folder: <strong>{{ folder }}</strong></p>
+
+        <div class="controls">
+            <label for="slice-slider">Slice:</label>
+            <input type="range" id="slice-slider" min="0" max="100" value="50">
+            <label for="slice-type">View:</label>
+            <select id="slice-type">
+                <option value="axial">Axial</option>
+                <option value="coronal">Coronal</option>
+                <option value="sagittal">Sagittal</option>
+            </select>
         </div>
+
+        <div class="visualization-grid" id="visualization-grid">
+            {% if is_segmented %}
+                <!-- 2 images (segmented) -->
+                <div class="vis-container" id="vis-t1" data-file="T1.nii.gz">
+                    <h3>T1</h3>
+                    <div class="loader"></div>
+                    <img class="mri-slice" src="">
+                </div>
+                <div class="vis-container" id="vis-seg" data-file="Segmentation.nii.gz">
+                    <h3>Segmentation</h3>
+                    <div class="loader"></div>
+                    <img class="mri-slice" src="">
+                </div>
+            {% else %}
+                <!-- 4 images (unsegmented) - 2x2 grid -->
+                <div class="vis-container" id="vis-t1" data-file="T1.nii.gz">
+                    <h3>T1</h3>
+                    <div class="loader"></div>
+                    <img class="mri-slice" src="">
+                </div>
+                <div class="vis-container" id="vis-t2" data-file="T2.nii.gz">
+                    <h3>T2</h3>
+                    <div class="loader"></div>
+                    <img class="mri-slice" src="">
+                </div>
+                <div class="vis-container" id="vis-t1c" data-file="T1C.nii.gz">
+                    <h3>T1C</h3>
+                    <div class="loader"></div>
+                    <img class="mri-slice" src="">
+                </div>
+                <div class="vis-container" id="vis-flair" data-file="FLAIR.nii.gz">
+                    <h3>FLAIR</h3>
+                    <div class="loader"></div>
+                    <img class="mri-slice" src="">
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="button-group">
+            <a href="{{ url_for('home') }}" class="cta special">Continue to Results</a>
+            <a href="{{ url_for('diagnose') }}" class="cta">Go Back</a>
+        </div>
+
+        <script>
+            console.log("Script loaded");
+            const folder = '{{ folder }}';
+            const containers = document.querySelectorAll('.vis-container');
+            const sliceSlider = document.getElementById('slice-slider');
+            const sliceTypeSelect = document.getElementById('slice-type');
+            let slices = {};
+
+            function showLoaders() {
+                containers.forEach(container => {
+                    const loader = container.querySelector('.loader');
+                    loader.style.display = 'block';
+                });
+            }
+
+            function hideLoaders() {
+                containers.forEach(container => {
+                    const loader = container.querySelector('.loader');
+                    loader.style.display = 'none';
+                });
+            }
+
+            function fetchSlices(orientation) {
+                console.log(`Fetching slices for orientation: ${orientation}`);
+                showLoaders();
+                const fetchPromises = Array.from(containers).map(container => {
+                    const fileName = container.dataset.file;
+                    return fetch(`/get_slices/${folder}/${fileName}/${orientation}`)
+                        .then(response => {
+                            console.log(`Response for ${fileName} (${orientation}):`, response.status);
+                            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                            return response.json();
+                        })
+                        .then(data => {
+                            console.log(`Slices fetched for ${fileName} (${orientation}):`, data.slices.length);
+                            if (!slices[fileName]) slices[fileName] = {};
+                            slices[fileName][orientation] = data.slices;
+                            return { fileName, slices: data.slices };
+                        })
+                        .catch(error => console.error(`Error fetching slices for ${fileName} (${orientation}):`, error));
+                });
+
+                Promise.all(fetchPromises).then(results => {
+                    updateSlice();
+                    hideLoaders();
+                });
+            }
+
+            function updateSlice() {
+                const sliderValue = parseInt(sliceSlider.value);
+                const orientation = sliceTypeSelect.value;
+                console.log(`Updating to slice ${sliderValue} in ${orientation}`);
+
+                containers.forEach(container => {
+                    const fileName = container.dataset.file;
+                    const img = container.querySelector('.mri-slice');
+                    if (slices[fileName] && slices[fileName][orientation] && slices[fileName][orientation][sliderValue]) {
+                        img.src = slices[fileName][orientation][sliderValue];
+                    }
+                });
+
+                // Set slider max based on smallest slice count for current orientation
+                const minSliceCount = Math.min(...Object.values(slices).map(s => s[orientation].length));
+                sliceSlider.max = minSliceCount - 1;
+                if (sliderValue > minSliceCount - 1) {
+                    sliceSlider.value = Math.floor(minSliceCount / 2);
+                    updateSlice(); // Recurse if slider was out of range
+                }
+            }
+
+            // Initial fetch for axial
+            fetchSlices('axial');
+
+            // Event listeners
+            sliceSlider.addEventListener('input', updateSlice);
+            sliceTypeSelect.addEventListener('change', () => {
+                fetchSlices(sliceTypeSelect.value);
+                updateSlice();
+            });
+
+            // Initial update delayed to ensure slices are fetched
+            setTimeout(updateSlice, 1000);
+        </script>
     </section>
 {% endblock %}

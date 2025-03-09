@@ -454,8 +454,130 @@ button.cta.special:disabled {
 .error .hero {
     height: 20vh; /* Taller than Diagnose (25vh) but shorter than Home (50vh) */
 }
+/* Confirm Upload Section */
+.confirm-section {
+    padding: 80px 40px;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+    background: var(--accent-white);
+}
+
+.confirm-section h1 {
+    font-size: 56px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    margin-bottom: 20px;
+    color: var(--text-dark);
+}
+
+.confirm-section h1 span {
+    color: var(--special-color);
+}
+
+.confirm-section p {
+    font-size: 20px;
+    color: var(--subtle-gray);
+    margin-bottom: 30px;
+}
+
+.controls {
+    margin: 20px 0;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    align-items: center;
+}
+
+.controls label {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+#slice-slider {
+    width: 200px;
+}
+
+#slice-type {
+    padding: 5px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid var(--subtle-gray);
+    background: var(--nav-button-bg);
+    color: var(--text-dark);
+}
+.visualization-grid {
+    display: grid;
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto 40px;
+}
+
+/* 4 images (unsegmented) - 2x2 grid */
+.confirm-upload:not(.segmented) .visualization-grid {
+    grid-template-columns: repeat(2, 1fr); /* 2 columns */
+    grid-template-rows: repeat(2, 1fr); /* 2 rows */
+}
+
+/* 2 images (segmented) - 1 row */
+.confirm-upload.segmented .visualization-grid {
+    grid-template-columns: repeat(2, 1fr); /* 2 columns */
+    grid-template-rows: 1fr; /* 1 row */
+}
+
+.vis-container {
+    background: var(--nav-button-bg);
+    border: 1px solid var(--subtle-gray);
+    border-radius: 5px;
+    overflow: hidden;
+    height: 350px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    padding: 10px; /* Add padding around content */
+}
+
+.vis-container h3 {
+    margin: 0 0 10px 0; /* Space below title */
+}
+
+.vis-container img.mri-slice {
+    width: 100%; /* Full width of padded area */
+    height: calc(100% - 40px); /* Height minus h3 and padding */
+    object-fit: contain; /* Show full image, no cropping */
+    max-width: 100%; /* Ensure it respects padding */
+    max-height: calc(100% - 40px); /* Respect padding and h3 */
+}
+
+.vis-container .loader {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 40px;
+    height: 40px;
+    border: 4px solid var(--subtle-gray);
+    border-top: 4px solid var(--special-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+/* .vis-container h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--primary-blue);
+    margin: 10px 0;
+} */
 
 /* Animations */
+@keyframes spin {
+    0% { transform: translate(-50%, -50%) rotate(0deg); }
+    100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
 @keyframes fadeIn {
     0% { opacity: 0; }
     100% { opacity: 1; }
@@ -516,5 +638,30 @@ button.cta.special:disabled {
     /* ... (previous media queries) ... */
     .confirm-upload .hero {
         height: 50vh; /* Adjusted for mobile */
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    /* ... (previous media queries) ... */
+    .confirm-section {
+        padding: 40px 20px;
+    }
+    .confirm-section h1 {
+        font-size: 36px;
+    }
+    .confirm-section p {
+        font-size: 16px;
+    }
+    .controls {
+        flex-direction: column;
+        gap: 10px;
+    }
+    #slice-slider {
+        width: 150px;
+    }
+    .visualization-grid {
+        grid-template-columns: 1fr; /* Stack all on mobile */
+        grid-template-rows: auto; /* Auto rows for both cases */
     }
 }

@@ -191,3 +191,21 @@
       });
   </script>
 {% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const fileInputs = document.querySelectorAll('input[type="file"]');
+        fileInputs.forEach(input => {
+            input.addEventListener('change', function() {
+                const fileNameSpan = this.parentElement.querySelector('.file-name');
+                if (this.files && this.files[0]) {
+                    fileNameSpan.textContent = this.files[0].name;
+                } else {
+                    fileNameSpan.textContent = 'No scan selected';
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}

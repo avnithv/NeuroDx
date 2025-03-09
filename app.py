@@ -1,12 +1,17 @@
-from flask import *
+from flask import Flask, render_template, request, redirect, url_for, send_from_directory, jsonify
 import os
 from datetime import datetime
+import nibabel as nib
+import numpy as np
+import matplotlib.pyplot as plt
+import sys
 
 app = Flask(__name__)
 
-# Ensure uploads directory exists
 UPLOADS_DIR = 'uploads'
+SLICE_DIR = 'static/slices'
 os.makedirs(UPLOADS_DIR, exist_ok=True)
+os.makedirs(SLICE_DIR, exist_ok=True)
 
 @app.route('/')
 def home():
@@ -40,20 +45,21 @@ def diagnose():
         except KeyError:
             return render_template('error.html', error_message="Invalid file assignments."), 400
 
-        # Create timestamp folder
         timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
         upload_folder = os.path.join(UPLOADS_DIR, timestamp)
         os.makedirs(upload_folder, exist_ok=True)
 
-        # Save files with standardized names
-        t1_file.save(os.path.join(upload_folder, 'T1.nii.gz'))
-        t2_file.save(os.path.join(upload_folder, 'T2.nii.gz'))
-        t1c_file.save(os.path.join(upload_folder, 'T1C.nii.gz'))
-        flair_file.save(os.path.join(upload_folder, 'FLAIR.nii.gz'))
+        t1_path = os.path.join(upload_folder, 'T1.nii.gz')
+        t2_path = os.path.join(upload_folder, 'T2.nii.gz')
+        t1c_path = os.path.join(upload_folder, 'T1C.nii.gz')
+        flair_path = os.path.join(upload_folder, 'FLAIR.nii.gz')
 
-        # Redirect to confirm upload page with timestamp
-        return redirect(url_for('confirm_upload', folder=timestamp))
+        t1_file.save(t1_path)
+        t2_file.save(t2_path)
+        t1c_file.save(t1c_path)
+        flair_file.save(flair_path)
 
+        return redirect(url_for('confirm_upload', folder=timestamp, is_segmented=0))
     return render_template('diagnose.html')
 
 @app.route('/diagnose_segmented', methods=['POST'])
@@ -80,23 +86,58 @@ def diagnose_segmented():
         except KeyError:
             return render_template('error.html', error_message="Invalid file assignments."), 400
 
-        # Create timestamp folder
         timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
         upload_folder = os.path.join(UPLOADS_DIR, timestamp)
         os.makedirs(upload_folder, exist_ok=True)
 
-        # Save files with standardized names
-        t1_file.save(os.path.join(upload_folder, 'T1.nii.gz'))
-        seg_file.save(os.path.join(upload_folder, 'Segmentation.nii.gz'))
+        t1_path = os.path.join(upload_folder, 'T1.nii.gz')
+        seg_path = os.path.join(upload_folder, 'Segmentation.nii.gz')
 
-        # Redirect to confirm upload page with timestamp
-        return redirect(url_for('confirm_upload', folder=timestamp))
+        t1_file.save(t1_path)
+        seg_file.save(seg_path)
 
+        return redirect(url_for('confirm_upload', folder=timestamp, is_segmented=1))
     return redirect(url_for('diagnose'))
 
 @app.route('/confirm_upload/<folder>')
 def confirm_upload(folder):
-    return render_template('confirm_upload.html', folder=folder)
+    is_segmented = int(request.args.get('is_segmented', 0))
+    upload_folder = os.path.join(UPLOADS_DIR, folder)
+    print(folder, upload_folder, is_segmented)
+    sys.stdout.flush()
+    if not os.path.exists(upload_folder):
+        return render_template('error.html', error_message="Upload folder not found."), 400
+
+    return render_template('confirm_upload.html', folder=folder, is_segmented=is_segmented)
+
+@app.route('/get_slices/<folder>/<filename>/<orientation>')
+def get_slices(folder, filename, orientation):
+    nifti_path = os.path.join(UPLOADS_DIR, folder, filename)
+    img = nib.load(nifti_path)
+    data = img.get_fdata()
+    
+    # Transpose data based on orientation
+    if orientation == 'coronal':
+        data = np.transpose(data, (1, 0, 2))  # Swap x and y
+    elif orientation == 'sagittal':
+        data = np.transpose(data, (2, 0, 1))  # Swap x and z
+    # Axial is default (no transpose)
+
+    slice_paths = []
+    slice_folder = os.path.join(SLICE_DIR, folder)
+    os.makedirs(slice_folder, exist_ok=True)
+    
+    filename_no_ext = filename.split('.')[0]  # e.g., 'T1' from 'T1.nii.gz'
+    file_slice_folder = os.path.join(slice_folder, filename_no_ext)
+    os.makedirs(file_slice_folder, exist_ok=True)
+    
+    for i in range(data.shape[2]):
+        slice_img = data[:, :, i]
+        slice_path = os.path.join(file_slice_folder, f"{orientation}_{i}.png")
+        plt.imsave(slice_path, slice_img, cmap='gray')
+        slice_paths.append(f"/static/slices/{folder}/{filename_no_ext}/{orientation}_{i}.png")
+
+    return jsonify({"slices": slice_paths})
 
 @app.route('/about')
 def about():

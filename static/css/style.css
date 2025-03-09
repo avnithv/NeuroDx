@@ -341,8 +341,16 @@ p {
     overflow: hidden;
 }
 
+.confirm-upload .hero {
+    height: 60vh; /* Same as error page for consistency */
+}
+
 .file-assignments {
     margin-top: 20px;
+}
+
+.upload-panel {
+    margin-bottom: 20px; /* Adds spacing between panels */
 }
 
 .file-assignments h3 {
@@ -399,6 +407,21 @@ p {
     cursor: move;
     word-break: break-all;
     text-align: center;
+}
+
+.features h3 {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 15px;
+    margin-top: 30px;
+}
+
+.file-assignments h4 {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 10px;
 }
 
 .hidden-input {
@@ -485,6 +508,13 @@ button.cta.special:disabled {
 @media (max-width: 768px) {
     /* ... (previous media queries) ... */
     .error .hero {
+        height: 50vh; /* Adjusted for mobile */
+    }
+}
+
+@media (max-width: 768px) {
+    /* ... (previous media queries) ... */
+    .confirm-upload .hero {
         height: 50vh; /* Adjusted for mobile */
     }
 }

@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}GliomaTech - Upload Confirmed{% endblock %}
+
+{% block body_class %}confirm-upload{% endblock %}
+
+{% block content %}
+    <section class="hero">
+        <!-- <div class="hero-bg" style="background: url('{{ url_for('static', filename='images/brain_mri.jpg') }}') no-repeat center;"></div> -->
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1>Upload <span>Confirmed</span></h1>
+            <p>Your scans have been successfully uploaded to folder: <strong>{{ folder }}</strong></p>
+            <div class="button-group">
+                <a href="{{ url_for('diagnose') }}" class="cta special">Upload More</a>
+                <a href="{{ url_for('home') }}" class="cta">Back to Home</a>
+            </div>
+        </div>
+    </section>
+{% endblock %}

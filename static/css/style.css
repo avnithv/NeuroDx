@@ -439,6 +439,14 @@ p {
     margin-bottom: 20px; /* Adds spacing between panels */
 }
 
+h5 {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 10px;
+    margin-top: 40px;
+}
+
 .file-assignments h3 {
     font-size: 24px;
     font-weight: 600;

@@ -35,7 +35,7 @@
                 </div>
             {% else %}
                 <!-- 4 images (unsegmented) - 2x2 grid -->
-                <div class="vis-container" id="vis-flair" data-file="Segmentation.nii.gz">
+                <div class="vis-container" id="vis-seg" data-file="Segmentation.nii.gz">
                     <h3>FLAIR</h3>
                     <div class="loader"></div>
                     <img class="mri-slice" src="">
@@ -64,7 +64,7 @@
         </div>
 
         <div class="button-group">
-            <a href="{{ url_for('result') }}" class="cta special">Continue to Results</a>
+            <a href="{{ url_for('results', folder=folder) }}" class="cta special">Continue to Results</a>
             <a href="{{ url_for('diagnose') }}" class="cta">Go Back</a>
         </div>
 

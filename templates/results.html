@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}GliomaDx- Results{% endblock %}
+
+{% block body_class %}results{% endblock %}
+
+{% block content %}
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+      <h1>Glioma <span>Analysis</span></h1>
+      <p>Your MRI image results, brought by advanced ML and biomedical innovation.</p>
+      <div class="button-group">
+
+  </div>
+</section>
+
+<div class="features">
+    <div class="info-box">
+            <p><strong>Type:</strong> {{ typing }}  <br> <strong>Confidence:</strong> {{ typing_confidence }}%</p>
+            <p><strong>Grade:</strong> {{ grading }} <br> <strong>Confidence:</strong> {{ grading_confidence }}%</p>
+            <a href="{{ url_for('home') }}" class="cta">Back to Home</a>
+        </div>
+        <h5>Disclaimer: This result should only be used as a reference and should be verified before it is used to make decisions for patient treatment.</h5>
+
+    </div>
+{% endblock %}

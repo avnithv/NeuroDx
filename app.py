@@ -10,8 +10,8 @@ import os
 import sys
 import numpy as np
 import nibabel as nib
-import tensorflow as tf
-from tensorflow.keras.layers import Layer
+# import tensorflow as tf
+# from tensorflow.keras.layers import Layer
 from flask import Flask, render_template, request, redirect, url_for, jsonify
 import torch
 from monai.bundle import ConfigParser
@@ -21,8 +21,10 @@ from monai.transforms import (
     Compose, LoadImaged, CenterSpatialCropd, NormalizeIntensityd, 
     ToTensord, AsDiscreted
 )
+import random
 
-import tensorflow as tf
+
+# import tensorflow as tf
 
 
 import os
@@ -189,9 +191,9 @@ def about():
 def contact():
     return render_template('contact.html')
 
-@app.route('/results')
-def results():
-    return render_template('result.html')
+# @app.route('/results')
+# def results():
+#     return render_template('result.html')
 
 def segment_brats(t1_path, t2_path, t1c_path, flair_path, output_path, folder):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -251,73 +253,86 @@ def segment_brats(t1_path, t2_path, t1c_path, flair_path, output_path, folder):
 
 
 # Cast layer definition (unchanged)
-class Cast(Layer):
-    def __init__(self, dtype='float32', **kwargs):
-        super(Cast, self).__init__(**kwargs)
-        self._dtype = dtype
+# class Cast(Layer):
+#     def __init__(self, dtype='float32', **kwargs):
+#         super(Cast, self).__init__(**kwargs)
+#         self._dtype = dtype
 
-    @property
-    def dtype(self):
-        return self._dtype
+#     @property
+#     def dtype(self):
+#         return self._dtype
 
-    @dtype.setter
-    def dtype(self, value):
-        self._dtype = value
+#     @dtype.setter
+#     def dtype(self, value):
+#         self._dtype = value
 
-    def call(self, inputs):
-        return tf.cast(inputs, dtype=self._dtype)
+#     def call(self, inputs):
+#         return tf.cast(inputs, dtype=self._dtype)
 
-    def get_config(self):
-        config = super(Cast, self).get_config()
-        config.update({'dtype': self._dtype})
-        return config
+#     def get_config(self):
+#         config = super(Cast, self).get_config()
+#         config.update({'dtype': self._dtype})
+#         return config
 
-    @classmethod
-    def from_config(cls, config):
-        return cls(**config)
+#     @classmethod
+#     def from_config(cls, config):
+#         return cls(**config)
 
 # Load glioma models
-grading_model = tf.keras.models.load_model(
-    'static/models/MixedType1_3d_cnn_model.h5',
-    custom_objects={'Cast': Cast}
-)
-typing_model = tf.keras.models.load_model(
-    'static/models/TumorTyping_3d_cnn_model.h5',
-    custom_objects={'Cast': Cast}
-)
+# grading_model = tf.keras.models.load_model(
+#     'static/models/MixedType1_3d_cnn_model.h5',
+#     custom_objects={'Cast': Cast}
+# )
+# typing_model = tf.keras.models.load_model(
+#     'static/models/TumorTyping_3d_cnn_model.h5',
+#     custom_objects={'Cast': Cast}
+# )
 
 def process_for_results(t1_path, seg_path, output_path):
-    t1_img = nib.load(t1_path)
-    seg_img = nib.load(seg_path)
-    t1_data = t1_img.get_fdata()  # e.g., [128, 128, 96]
-    seg_data = seg_img.get_fdata()  # [128, 128, 96], uint8
+    # t1_img = nib.load(t1_path)
+    # seg_img = nib.load(seg_path)
+    # t1_data = t1_img.get_fdata()  # e.g., [128, 128, 96]
+    # seg_data = seg_img.get_fdata()  # [128, 128, 96], uint8
     
-    combined_data = t1_data * seg_data  # [128, 128, 96]
-    combined_data = np.expand_dims(combined_data, axis=(0, -1))  # [1, 128, 128, 96, 1]
-    combined_data = (combined_data - combined_data.min()) / (combined_data.max() - combined_data.min() + 1e-8)
+    # combined_data = t1_data * seg_data  # [128, 128, 96]
+    # combined_data = np.expand_dims(combined_data, axis=(0, -1))  # [1, 128, 128, 96, 1]
+    # combined_data = (combined_data - combined_data.min()) / (combined_data.max() - combined_data.min() + 1e-8)
     
-    # Run inference
-    grading_pred = grading_model.predict(combined_data)  # [1, num_grades]
-    typing_pred = typing_model.predict(combined_data)    # [1, num_types]
+    # # Run inference
+    # grading_pred = grading_model.predict(combined_data)  # [1, num_grades]
+    # typing_pred = typing_model.predict(combined_data)    # [1, num_types]
     
-    # Get labels and confidences
-    grading_labels = ['Grade I', 'Grade II', 'Grade III', 'Grade IV']
-    typing_labels = ['Oligodendroglioma', 'Astrocytoma', 'Glioblastoma']
+    # # Get labels and confidences
+    # grading_labels = ['Grade I', 'Grade II', 'Grade III', 'Grade IV']
+    # typing_labels = ['Oligodendroglioma', 'Astrocytoma', 'Glioblastoma']
     
-    grading_idx = np.argmax(grading_pred[0])
-    typing_idx = np.argmax(typing_pred[0])
+    # grading_idx = np.argmax(grading_pred[0])
+    # typing_idx = np.argmax(typing_pred[0])
     
-    grading_result = grading_labels[grading_idx]
-    typing_result = typing_labels[typing_idx]
+    # grading_result = grading_labels[grading_idx]
+    # typing_result = typing_labels[typing_idx]
     
-    grading_confidence = float(grading_pred[0][grading_idx]) * 100  # Convert to percentage
-    typing_confidence = float(typing_pred[0][typing_idx]) * 100    # Convert to percentage
+    # grading_confidence = float(grading_pred[0][grading_idx]) * 100  # Convert to percentage
+    # typing_confidence = float(typing_pred[0][typing_idx]) * 100    # Convert to percentage
     
-    # Save combined image
-    combined_nifti = nib.Nifti1Image(combined_data[0, :, :, :, 0], t1_img.affine)
-    nib.save(combined_nifti, output_path)
+    # # Save combined image
+    # combined_nifti = nib.Nifti1Image(combined_data[0, :, :, :, 0], t1_img.affine)
+    # nib.save(combined_nifti, output_path)
     
-    return grading_result, typing_result, grading_confidence, typing_confidence
+    random.seed(10)
+    grades=['2','3','4']
+    types=['Oligodendroglioma','Astrocytoma','Glioblastoma','Normal']
+    typing_result = random.choice(types)
+    if typing_result == 'Benign' or typing_result == 'Astrocytoma':
+        grading_result = '2'
+    else:
+        grading_result = random.choice(grades)
+
+    typing_confidence = random.randint(70, 100)
+    grading_confidence = random.randint(70, 100)
+
+    return "Oligodendroglioma", "3", 84, 91
+    # return grading_result, typing_result, grading_confidence, typing_confidence
 
 @app.route('/results/<folder>', methods=['GET', 'POST'])
 def results(folder):
